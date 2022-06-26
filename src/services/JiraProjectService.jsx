@@ -76,3 +76,37 @@ export const deleteMemberAPI = (payload) =>{
         headers: {'Authorization': 'Bearer '+ localStorage.getItem(ACCESS_TOKEN)},
     })
 }
+export const getProjectDetailAPI = (projectId)=>{
+    return Axios({
+        method: 'GET',
+        url: `http://casestudy.cyberlearn.vn/api/Project/getProjectDetail?id=${projectId}`,
+        headers: {'Authorization': 'Bearer '+ localStorage.getItem(ACCESS_TOKEN)}
+    })
+}
+export const getTaskTypeAPI = ()=>{
+    return Axios({
+        method: 'GET',
+        url: 'http://casestudy.cyberlearn.vn/api/TaskType/getAll'
+    })
+}
+export const getPriorityAPI = ()=>{
+    return Axios({
+        method: 'GET',
+        url: 'http://casestudy.cyberlearn.vn/api/Priority/getAll?id=0'
+    })
+}
+export const getAllUserAPI =()=>{
+    return Axios({
+        method: 'GET',
+        url: 'http://casestudy.cyberlearn.vn/api/Users/getUser', 
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+    })
+}
+export const createTaskAPI = (payload)=>{
+    return Axios({
+        method: 'POST',
+        url:'http://casestudy.cyberlearn.vn/api/Project/createTask',
+        data: payload,
+        headers: {'Authorization': 'Bearer '+ localStorage.getItem(ACCESS_TOKEN)},
+    })
+}

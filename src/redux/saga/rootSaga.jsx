@@ -8,6 +8,11 @@ import * as deleteProjectSaga from './deleteProjectSaga';
 import * as getUsersByNameSaga from './getUsersByNameSaga';
 import * as addMoreMembersSaga from './addMoreMembersSaga';
 import * as deleteMemberSaga from './deleteMemberSaga';
+import * as getProjectDetailSaga from './getProjectDetailSaga';
+import * as getTaskTypeSaga from './getTaskTypeSaga';
+import * as getPrioritySaga from './getPrioritySaga';
+import * as getAllUserSaga from './getAllUserSaga';
+import * as createTaskSaga from './createTaskSaga';
 
 export function *rootSaga(){
     yield all([
@@ -20,5 +25,10 @@ export function *rootSaga(){
         getUsersByNameSaga.followGetUsersByNameSaga(),
         addMoreMembersSaga.followAddMoreMembersSaga(),
         deleteMemberSaga.followDeleteMemberSaga(),
+        getProjectDetailSaga.followGetProjectDetailSaga(),
+        getTaskTypeSaga.followGetTaskTypeSaga(),
+        getPrioritySaga.followGetPrioritySaga(),
+        getAllUserSaga.followGetAllUserSaga(),
+        createTaskSaga.followCreateTaskSaga(),
     ]);
 };

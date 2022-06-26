@@ -5,9 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 //import ReactHtmlParser from "react-html-parser";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { GET_ALL_PROJECT_LIST_SAGA } from "../../redux/constants/JiraProjectAction";
-import DrawerContent from "../../components/JiraComp/DrawerContent";
+import DrawerEditProject from "../../components/JiraComp/DrawerEditProject";
 import {  Popconfirm } from "antd";
 import { Fragment } from "react";
+import { NavLink } from "react-router-dom";
 
 export default function JiraManagement() {
   const dispatch = useDispatch();
@@ -22,8 +23,9 @@ export default function JiraManagement() {
 
   const showDrawer = (project) => {
     const action = {
-      type: "OPEN_DRAWER",
-      content: <DrawerContent />,
+      type: "OPEN_DRAWER_EDIT_PROJECT",
+      content: <DrawerEditProject />,
+      title: 'Edit project'
     };
     //dispatch action: open drawer
     dispatch(action);
@@ -49,6 +51,7 @@ export default function JiraManagement() {
       title: "Project name",
       dataIndex: "projectName",
       key: "projectName",
+      render: (text, record, index)=> <NavLink to={`/jiraProjectDetail/${record.id}`}> {record.projectName}</NavLink>,
       sorter: (a, b) => {
         let name1 = a.projectName?.trim().toLowerCase();
         let name2 = b.projectName?.trim().toLowerCase();
@@ -83,7 +86,7 @@ export default function JiraManagement() {
       dataIndex: "creator",
       key: "creator",
       render: (text, record, index) => (
-        <Tag color="blue">{record.creator?.name}</Tag>
+        <Tag>{record.creator?.name}</Tag>
       ),
       sorter: (a, b) => {
         let name1 = a.creator.name?.trim().toLowerCase();
@@ -188,7 +191,7 @@ export default function JiraManagement() {
           <Space size="middle">
             <button
               onClick={() => showDrawer(record)}
-              className="btn btn-outline-info btn-sm"
+              className="btn btn-outline-info btn-floating btn-sm"
             >
               <EditOutlined />
             </button>
@@ -200,7 +203,7 @@ export default function JiraManagement() {
               okText="Yes"
               cancelText="No"
             >
-              <button className="btn btn-outline-danger btn-sm">
+              <button className="btn btn-outline-danger btn-floating btn-sm">
                 <DeleteOutlined />
               </button>
             </Popconfirm>

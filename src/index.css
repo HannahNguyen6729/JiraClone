@@ -480,6 +480,6 @@ code {
   padding: 12px 0 !important;
 }
 .ant-select-selector{
-  border: none !important;
+  /* border: none !important; */
 }
 

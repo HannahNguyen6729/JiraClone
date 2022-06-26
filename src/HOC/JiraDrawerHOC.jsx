@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 
 export default function JiraDrawerHOC() {
-  const { visible, DrawerContentComponent, callbackSubmit } = useSelector((state) => state.JiraDrawerReducer);
+  const { visible, DrawerContentComponent, callbackSubmit,title } = useSelector((state) => state.JiraDrawerReducer);
   const dispatch = useDispatch();
   const onClose = () => {
     dispatch({ type: "CLOSE_DRAWER" });
@@ -12,7 +12,7 @@ export default function JiraDrawerHOC() {
   return (
     <>
       <Drawer
-        title="Edit project"
+        title={`${title}`}
         width={720}
         onClose={onClose}
         visible={visible}

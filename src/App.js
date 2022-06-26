@@ -25,6 +25,7 @@ function App() {
         <JiraTemplate exact path="/jiraboard" Comp={JiraBoard} />
         <JiraTemplate exact path="/jiraproject" Comp={JiraProject} />
         <JiraTemplate exact path="/jiramanagement" Comp={JiraManagement} />
+        <JiraTemplate exact path="/jiraProjectDetail/:projectId" Comp={JiraBoard} />
         <JiraTemplate exact path="/" Comp={JiraManagement} />
         <HomeTemplate exact path="*" Comp={PageNotFound} />
       </Switch>

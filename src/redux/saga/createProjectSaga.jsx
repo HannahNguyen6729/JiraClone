@@ -10,7 +10,6 @@ function * createProjectSaga(action){
     try{
         let {data} = yield call(()=> JiraProjectService.createProjectAuthorizationAPI(action.payload) )
         if(data.statusCode === STATUS_CODE.SUCCESS){
-            console.log(data.content)
             history.push('/jiramanagement');
         }
     }catch(err){

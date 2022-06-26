@@ -1,9 +1,29 @@
 import React from "react";
 
-export default function ContentMain() {
+export default function ContentMain(props) {
+  const { projectDetail } = props;
+  console.log(projectDetail);
+
+  const renderTaskList = () => {
+    return projectDetail.lstTask?.map((task, index) => (
+      <div key={index} className="card" style={{ width: "17rem", height: "25rem" }}>
+        <div className="card-header">{task.statusName}</div>
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">Cras justo odio</li>
+          <li className="list-group-item">Dapibus ac facilisis in</li>
+        </ul>
+      </div>
+    ));
+  };
   return (
     <div className="content" style={{ display: "flex" }}>
-      <div className="card" style={{ width: "17rem", height: "25rem" }}>
+      {renderTaskList()}
+    </div>
+  );
+}
+
+{
+  /* <div className="card" style={{ width: "17rem", height: "25rem" }}>
         <div className="card-header">BACKLOG 3</div>
         <ul className="list-group list-group-flush">
           <li
@@ -77,7 +97,5 @@ export default function ContentMain() {
           <li className="list-group-item">Dapibus ac facilisis in</li>
           <li className="list-group-item">Vestibulum at eros</li>
         </ul>
-      </div>
-    </div>
-  );
+      </div> */
 }

@@ -9,12 +9,15 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Item } from "antd";
 import { useState } from "react";
+import {useSelector, useDispatch} from "react-redux";
+import DrawerCreateTask from "./DrawerCreateTask";
 const { Header, Sider, Content } = Layout;
 
 export default function SideBar() {
   const [collapsed, setCollapsed] = useState(false);
+  const dispatch= useDispatch();
 
   return (
     <>
@@ -37,7 +40,11 @@ export default function SideBar() {
             {
               key: "1",
               icon: <PlusOutlined />,
-              label: "Create Issue",
+              label: "Create Task",
+              onClick: ()=>{ dispatch({
+                type: 'OPEN_DRAWER_CREATE_TASK', 
+                title: "Create Task", 
+                content: <DrawerCreateTask/>})}
             },
             {
               key: "2",

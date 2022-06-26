@@ -2,7 +2,16 @@ import { GET_ALL_PROJECT_LIST } from "../constants/JiraProjectAction"
 
 let defaultState = {
     projectArr: [],
-    userList: []
+    userList: [],
+    projectDetail: {
+        id:null,
+        projectName:'',
+        projectCategory:{},
+        members: [],
+        creator:{},
+        description:'',
+        lstTask:[]
+    }
 }
 
 export const JiraManagementReducer = (state= defaultState, action) =>{
@@ -15,6 +24,9 @@ export const JiraManagementReducer = (state= defaultState, action) =>{
             state.userList = action.payload;
             return {...state}
         }
+        case 'GET_PROJECT_DETAIL':{
+            state.projectDetail = action.payload;
+            return {...state}}
         default: 
         return {...state}
     }
