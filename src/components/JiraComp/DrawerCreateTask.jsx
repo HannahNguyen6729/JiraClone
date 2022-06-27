@@ -8,9 +8,12 @@ import { withFormik } from "formik";
 import {
   CREATE_TASK_SAGA,
   GET_ALL_PROJECT_LIST_SAGA,
+  GET_ALL_STATUS_ID_SAGA,
   GET_ALL_USER_SAGA,
+  GET_MEMBERS_BY_PROJECT_ID_SAGA,
   GET_PRIORITY_SAGA,
   GET_TASK_TYPE_SAGA,
+  SET_SUBMIT_CREATE_TASK,
 } from "../../redux/constants/JiraProjectAction";
 
 
@@ -25,14 +28,18 @@ function DrawerCreateTask(props) {
   let projectList = useSelector((state) => state.JiraManagementReducer.projectArr);
   let taskTypeList = useSelector((state) => state.JiraDrawerContentReducer.taskTypeList );
   let priorityList = useSelector((state) => state.JiraDrawerContentReducer.priorityList);
-  let userList = useSelector((state) => state.JiraDrawerContentReducer.userList );
+ // let userList = useSelector((state) => state.JiraDrawerContentReducer.userList );
+  let statusIdList = useSelector((state) => state.JiraDrawerContentReducer.statusIdList);
+  let membersList = useSelector((state) => state.JiraDrawerContentReducer.membersList );
   const { values, touched, errors, handleChange, handleBlur, handleSubmit,setFieldValue } = props;
-
   useEffect(() => {
     dispatch({ type: GET_ALL_PROJECT_LIST_SAGA });
     dispatch({ type: GET_TASK_TYPE_SAGA });
     dispatch({ type: GET_PRIORITY_SAGA });
     dispatch({ type: GET_ALL_USER_SAGA });
+    dispatch({ type: GET_ALL_STATUS_ID_SAGA});
+    //dispatch function handleSubmit to JiraDrawerReducer to update the event of submit button
+    dispatch({type: SET_SUBMIT_CREATE_TASK, payload: handleSubmit});
   }, []);
   const renderProjectList = () => {
     return projectList.map((project, index) => (
@@ -44,19 +51,24 @@ function DrawerCreateTask(props) {
   const renderTaskType = () => {
     return taskTypeList.map((task, index) => (
       <option value={task.id} key={index}>
-        {" "}
-        {task.taskType}{" "}
+        {task.taskType}
       </option>
     ));
   };
   const renderPriority = () => {
     return priorityList.map((item, index) => (
       <option key={index} value={item.priorityId}>
-        {" "}
-        {item.priority}{" "}
+        {item.priority}
       </option>
     ));
   };
+  const renderStatus =()=>{
+    return statusIdList.map((item, index)=> (
+      <option key={index} value={item.statusId}>
+        {item.statusName}
+      </option>
+    ))
+  }
 
   return (
     <form className="container" onSubmit={handleSubmit}>
@@ -65,7 +77,12 @@ function DrawerCreateTask(props) {
         <select
           name="projectId"
           className="custom-select"
-          onChange={handleChange}
+          onChange={(e)=>{
+            //update projectId
+            setFieldValue('projectId', e.target.value);
+            //dispatch action with projectId to get all members of the project
+            dispatch({type: GET_MEMBERS_BY_PROJECT_ID_SAGA, payload: e.target.value})
+          }}
         >
           {renderProjectList()}
         </select>
@@ -76,6 +93,16 @@ function DrawerCreateTask(props) {
           name="taskName"
           onChange={handleChange}
         />
+      </div>
+      <div className="form-group">
+        <p>Status</p>
+        <select
+          name="statusId"
+          className="custom-select"
+          onChange={handleChange}
+        >
+          {renderStatus()}
+        </select>
       </div>
       <div className="form-group">
         <div className="row">
@@ -109,7 +136,7 @@ function DrawerCreateTask(props) {
               mode="multiple"
               size="large"
               placeholder="Please select"
-              options={userList.map((item, index) => ({
+              options={membersList?.map((item, index) => ({
                 value: item.userId,
                 label: item.name,
               }))}
@@ -233,33 +260,37 @@ function DrawerCreateTask(props) {
           }}
         />
       </div>
-      <button type="submit">Submit</button>
     </form>
   );
 }
 const CreateTaskForm = withFormik({
   mapPropsToValues: (props) => {
+    let {projectList, taskTypeList, priorityList,statusIdList} = props;
     return {
      listUserAsign: [],
      taskName: "",
      description: "",
-     statusId: 1,
+     statusId: statusIdList[0]?.statusId,
      originalEstimate: 0,
      timeTrackingSpent: 0,
      timeTrackingRemaining: 0,
-     projectId: 0,
-     typeId: 0,
-     priorityId: 0,
+     projectId: projectList[0]?.id,
+     typeId: taskTypeList[0]?.id,
+     priorityId: priorityList[0]?.priorityId,
     };
   },
   validationSchema: Yup.object().shape({}),
   handleSubmit: (values, { props, setSubmitting }) => {
     props.dispatch({type: CREATE_TASK_SAGA, payload: values});
-    // console.log(values);
+    console.log('values',values);
     setSubmitting(false);
   },
-
   displayName: "CreateTaskForm",
 })(DrawerCreateTask);
-
-export default connect()(CreateTaskForm);
+const mapStateToProps = (state)=>({
+  projectList:state.JiraManagementReducer.projectArr,
+  taskTypeList: state.JiraDrawerContentReducer.taskTypeList,
+  priorityList: state.JiraDrawerContentReducer.priorityList,
+  statusIdList: state.JiraDrawerContentReducer.statusIdList,
+})
+export default connect(mapStateToProps)(CreateTaskForm);

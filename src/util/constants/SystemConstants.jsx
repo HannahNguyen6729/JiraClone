@@ -1,7 +1,7 @@
 
 export const STATUS_CODE = {
     SUCCESS: 200,
-    NOT_FOUND: 400,
+    NOT_FOUND: 404,
 }
 
 export const USER_INFO = 'USER_INFO';

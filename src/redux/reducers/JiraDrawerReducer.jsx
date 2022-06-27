@@ -1,3 +1,5 @@
+import { SET_SUBMIT_CREATE_TASK } from "../constants/JiraProjectAction";
+
 const defaultState = {
   visible: false,
   title: 'string',
@@ -27,6 +29,9 @@ export const JiraDrawerReducer = (state = defaultState, action) => {
     }
     case 'SUBMIT_EDITED_PROJECT':{
         return {...state, callbackSubmit: action.payload}
+    }
+    case SET_SUBMIT_CREATE_TASK: {
+      return {...state, callbackSubmit: action.payload}
     }
     default:
       return { ...state };

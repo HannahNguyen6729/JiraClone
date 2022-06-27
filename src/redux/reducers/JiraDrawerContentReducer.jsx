@@ -1,4 +1,4 @@
-import { GET_ALL_USER, GET_PRIORITY, GET_TASK_TYPE } from "../constants/JiraProjectAction";
+import { GET_ALL_STATUS_ID, GET_ALL_USER, GET_MEMBERS_BY_PROJECT_ID, GET_PRIORITY, GET_TASK_TYPE } from "../constants/JiraProjectAction";
 
 const defaultState = {
     editedProject: {
@@ -11,6 +11,8 @@ const defaultState = {
     taskTypeList:[],
     priorityList:[],
     userList:[],
+    statusIdList:[],
+    membersList:[]
 }
 export  const JiraDrawerContentReducer = (state = defaultState, action)=>{
     switch(action.type){
@@ -26,6 +28,12 @@ export  const JiraDrawerContentReducer = (state = defaultState, action)=>{
         }
         case GET_ALL_USER: {
             return {...state,userList: action.payload}
+        }
+        case GET_ALL_STATUS_ID:{
+            return {...state,statusIdList: action.payload}
+        }
+        case GET_MEMBERS_BY_PROJECT_ID:{
+            return {...state,membersList: action.payload}
         }
         default: {
             return {...state}

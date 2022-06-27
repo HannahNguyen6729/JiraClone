@@ -6,11 +6,28 @@ export default function ContentMain(props) {
 
   const renderTaskList = () => {
     return projectDetail.lstTask?.map((task, index) => (
-      <div key={index} className="card" style={{ width: "17rem", height: "25rem" }}>
+      <div key={index} className="card" style={{ width: "17rem", height: "auto" }}>
         <div className="card-header">{task.statusName}</div>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">Cras justo odio</li>
-          <li className="list-group-item">Dapibus ac facilisis in</li>
+          {task.lstTaskDeTail.map((item,i)=> (
+            <li key={i} className="list-group-item"> 
+              <p>{item.taskName}</p>
+              <div className="block" style={{ display: "flex" }}>
+              <div className="block-left">
+                <span className="text-danger">{item.priorityTask.priority}</span>
+                <i className="fa fa-arrow-up" />
+              </div>
+              <div className="block-right">
+                <div className="avatar-group" style={{ display: "flex" }}>
+                  <div className="avatar">
+                    {item.assigness.map((member,index)=> <img src={member.avatar} alt={member.name} key={index} />)}
+                  </div>
+                </div>
+              </div>
+            </div>
+            </li>
+          ))}
+          
         </ul>
       </div>
     ));

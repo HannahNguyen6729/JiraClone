@@ -110,3 +110,16 @@ export const createTaskAPI = (payload)=>{
         headers: {'Authorization': 'Bearer '+ localStorage.getItem(ACCESS_TOKEN)},
     })
 }
+export const getAllStatusIdAPI=() => {
+    return Axios({
+        method:'GET',
+        url:'http://casestudy.cyberlearn.vn/api/Status/getAll'
+    })
+}
+export const getMembersByProjectIdAPI = (projectId)=>{
+    return Axios({
+        method: 'GET',
+        url: `http://casestudy.cyberlearn.vn/api/Users/getUserByProjectId?idProject=${projectId}`,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+    })
+}
