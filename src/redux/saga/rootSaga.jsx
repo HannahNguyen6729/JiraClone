@@ -15,6 +15,7 @@ import * as getAllUserSaga from './getAllUserSaga';
 import * as createTaskSaga from './createTaskSaga';
 import * as getAllStatusIdSaga from './getAllStatusIdSaga';
 import * as getMembersByProjectIdSaga from './getMembersByProjectIdSaga';
+import * as getDetailTaskSaga from './getDetailTaskSaga';
 
 export function *rootSaga(){
     yield all([
@@ -34,5 +35,6 @@ export function *rootSaga(){
         createTaskSaga.followCreateTaskSaga(),
         getAllStatusIdSaga.followGetAllStatusIdSaga(),
         getMembersByProjectIdSaga.followGetMembersByProjectIdSaga(),
+        getDetailTaskSaga.followGetDetailTaskSaga(),
     ]);
 };

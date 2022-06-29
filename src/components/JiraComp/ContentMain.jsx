@@ -1,8 +1,12 @@
 import React from "react";
+import {useDispatch} from 'react-redux';
+import { GET_DETAIL_TASK_SAGA } from "../../redux/constants/JiraProjectAction";
 
 export default function ContentMain(props) {
   const { projectDetail } = props;
-  console.log(projectDetail);
+  const dispatch = useDispatch();
+  //console.log(projectDetail);
+
 
   const renderTaskList = () => {
     return projectDetail.lstTask?.map((task, index) => (
@@ -10,7 +14,12 @@ export default function ContentMain(props) {
         <div className="card-header">{task.statusName}</div>
         <ul className="list-group list-group-flush">
           {task.lstTaskDeTail.map((item,i)=> (
-            <li key={i} className="list-group-item"> 
+            <li key={i} className="list-group-item" 
+                data-toggle="modal"
+                data-target="#infoModal"
+                style={{ cursor: "pointer" }}
+                onClick={()=> dispatch({type: GET_DETAIL_TASK_SAGA, payload: item.taskId})}
+                > 
               <p>{item.taskName}</p>
               <div className="block" style={{ display: "flex" }}>
               <div className="block-left">
@@ -26,8 +35,7 @@ export default function ContentMain(props) {
               </div>
             </div>
             </li>
-          ))}
-          
+          ))}  
         </ul>
       </div>
     ));

@@ -123,3 +123,10 @@ export const getMembersByProjectIdAPI = (projectId)=>{
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
     })
 }
+export const getDetailTaskAPI = (taskId)=>{
+    return Axios({
+        method:'GET',
+        url:`http://casestudy.cyberlearn.vn/api/Project/getTaskDetail?taskId=${taskId}`,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+    })
+}

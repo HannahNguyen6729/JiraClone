@@ -36,7 +36,7 @@ function DrawerCreateTask(props) {
     dispatch({ type: GET_ALL_PROJECT_LIST_SAGA });
     dispatch({ type: GET_TASK_TYPE_SAGA });
     dispatch({ type: GET_PRIORITY_SAGA });
-    dispatch({ type: GET_ALL_USER_SAGA });
+    //dispatch({ type: GET_ALL_USER_SAGA });
     dispatch({ type: GET_ALL_STATUS_ID_SAGA});
     //dispatch function handleSubmit to JiraDrawerReducer to update the event of submit button
     dispatch({type: SET_SUBMIT_CREATE_TASK, payload: handleSubmit});

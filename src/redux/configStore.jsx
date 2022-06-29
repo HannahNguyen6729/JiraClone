@@ -7,6 +7,7 @@ import { JiraProjectReducer } from './reducers/JiraProjectReducer';
 import { JiraManagementReducer } from './reducers/JiraManagementReducer';
 import { JiraDrawerReducer } from './reducers/JiraDrawerReducer';
 import { JiraDrawerContentReducer } from './reducers/JiraDrawerContentReducer';
+import { JiraDetailTaskModalReducer } from './reducers/JiraDetailTaskModalReducer';
 
 
 const sagaMiddleWare = createSagaMiddleware();
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     JiraManagementReducer,
     JiraDrawerReducer,
     JiraDrawerContentReducer,
+    JiraDetailTaskModalReducer,
 });
 
 export const store = createStore(rootReducer, applyMiddleware(sagaMiddleWare));

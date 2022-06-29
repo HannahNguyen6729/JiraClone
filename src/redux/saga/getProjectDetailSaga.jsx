@@ -7,7 +7,7 @@ function *getProjectDetailSaga(action){
         let {data}= yield call(()=> JiraProjectService.getProjectDetailAPI(action.payload))
         
         if(data.statusCode === STATUS_CODE.SUCCESS){
-            console.log(data.content)
+            //console.log(data.content)
             yield put({type: 'GET_PROJECT_DETAIL', payload: data.content})
         }
     }catch(err){
