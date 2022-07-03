@@ -130,3 +130,11 @@ export const getDetailTaskAPI = (taskId)=>{
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
     })
 }
+export const updateTaskDetailAPI =(updateTask)=>{
+    return Axios({
+        method:'POST',
+        url: 'http://casestudy.cyberlearn.vn/api/Project/updateTask',
+        data: updateTask,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+    })
+}

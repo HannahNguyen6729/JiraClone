@@ -415,11 +415,11 @@ code {
 }
 
 .item {
-  margin-right: 20px;
+  margin-right: 10px;
   background: #e9eaf0;
   padding: 5px;
   border-radius: 5px;
-  flex-basis: 50%;
+  /* flex-basis: 50%; */
 }
 
 .item .avatar img {

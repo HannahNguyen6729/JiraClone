@@ -1,4 +1,4 @@
-import { CHANGE_DETAIL_TASK_MODAL, GET_DETAIL_TASK } from "../constants/JiraProjectAction";
+import { ADD_MEMBER_TO_TASK, CHANGE_DETAIL_TASK_MODAL, DELETE_MEMBER_IN_TASK, GET_DETAIL_TASK } from "../constants/JiraProjectAction";
 
 const defaultState = {
   priorityTask: {
@@ -21,7 +21,7 @@ const defaultState = {
   taskId: 1,
   taskName: "default name",
   alias: "default name",
-  description: "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, corrupti! Quidem corporis consequuntur nostrum cumque. Doloremque totam ut neque fugiat reiciendis sint at doloribus optio minima culpa, iure nesciunt vero!</p>",
+  description: "<p>hello</p>",
   statusId: "1",
   originalEstimate: 1,
   timeTrackingSpent: 1,
@@ -38,8 +38,16 @@ export const JiraDetailTaskModalReducer = (state = defaultState, action) => {
     }
     case CHANGE_DETAIL_TASK_MODAL:{
       state = {...state, [action.payload.name]: action.payload.value}; 
-      //console.log(state)
+      console.log('redux',state)
       return { ...state };
+    }
+    case ADD_MEMBER_TO_TASK:{
+      state.assigness= [...state.assigness, action.payload];
+      return { ...state };
+    }
+    case DELETE_MEMBER_IN_TASK:{
+      state.assigness= [...state.assigness.filter(item=> item.id !== action.payload)];
+      return { ...state}
     }
     default:
         return { ...state };
