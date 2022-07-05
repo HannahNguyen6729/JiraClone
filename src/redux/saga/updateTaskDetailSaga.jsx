@@ -1,5 +1,5 @@
 import {takeLatest, call, put, select} from 'redux-saga/effects';
-import { ADD_MEMBER_TO_TASK, CHANGE_DETAIL_TASK_MODAL, DELETE_MEMBER_IN_TASK, GET_DETAIL_TASK_SAGA, UPDATE_TASK_DETAIL_SAGA } from '../constants/JiraProjectAction';
+import { ADD_COMMENT_TO_TASK_SAGA, ADD_MEMBER_TO_TASK, CHANGE_DETAIL_TASK_MODAL, DELETE_COMMENT_SAGA, DELETE_MEMBER_IN_TASK, GET_DETAIL_TASK_SAGA, UPDATE_COMMENT_SAGA, UPDATE_TASK_DETAIL_SAGA } from '../constants/JiraProjectAction';
 import * as JiraProjectService from '../../services/JiraProjectService';
 import { STATUS_CODE } from '../../util/constants/SystemConstants';
 function * updateTaskDetailSaga(action) {
@@ -20,6 +20,33 @@ function * updateTaskDetailSaga(action) {
             yield put({
                 type: DELETE_MEMBER_IN_TASK, payload: memberId
             })
+            break;
+        }
+        case ADD_COMMENT_TO_TASK_SAGA:{
+            //console.log(action.payload)
+            try{
+                const {data}= yield call(()=> JiraProjectService.addCommentToTaskAPI(action.payload))
+            }catch(err){
+                console.log(err)
+            }
+            break;
+        }
+        case UPDATE_COMMENT_SAGA:{
+            //console.log(action.payload)
+            try{
+                const {data} = yield call(()=> JiraProjectService.updateCommentAPI(action.payload.id, action.payload.contentComment))
+            }catch(err){
+                console.log(err)
+            }
+            break;
+        }
+        case DELETE_COMMENT_SAGA:{
+            //console.log(action.payload)
+            try{
+                const {data}= yield call(()=> JiraProjectService.deleteCommentAPI(action.payload))
+            }catch(err){
+                console.log(err)
+            }
             break;
         }
         default: 

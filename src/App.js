@@ -12,6 +12,7 @@ import JiraBoard from "./pages/Jira/JiraBoard";
 import JiraProject from "./pages/Jira/JiraProject";
 import JiraManagement from "./pages/Jira/JiraManagement";
 import JiraDrawerHOC from "./HOC/JiraDrawerHOC";
+import Register from "./pages/Register/Register";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <HomeTemplate exact path="/about" Comp={About} />
         <HomeTemplate exact path="/contact" Comp={Contact} />
         <UserLoginTemplate exact path="/login" Comp={UserLogin} />
+        <UserLoginTemplate exact path="/register" Comp={Register} />
         <JiraTemplate exact path="/jiraboard" Comp={JiraBoard} />
         <JiraTemplate exact path="/jiraproject" Comp={JiraProject} />
         <JiraTemplate exact path="/jiramanagement" Comp={JiraManagement} />

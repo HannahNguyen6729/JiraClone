@@ -482,4 +482,10 @@ code {
 .ant-select-selector{
   /* border: none !important; */
 }
+.editComment:hover{
+  color: blue;
+}
+.deleteComment:hover{
+  color: red;
+}
 

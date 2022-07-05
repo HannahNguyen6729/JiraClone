@@ -17,7 +17,14 @@ const defaultState = {
       alias: "default",
     },
   ],
-  lstComment: [],
+  lstComment: [{
+    id:0,
+    idUser: 0,
+    taskId:0,
+    name: "default",
+    commentContent: "default default",
+    avatar:'https://ui-avatars.com/api/?name=Khoasharp'
+  }],
   taskId: 1,
   taskName: "default name",
   alias: "default name",

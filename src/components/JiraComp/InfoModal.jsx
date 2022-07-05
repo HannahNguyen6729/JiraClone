@@ -4,12 +4,15 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useSelector, useDispatch } from "react-redux";
 import ReactHtmlParser from "react-html-parser";
 import {
+  ADD_COMMENT_TO_TASK_SAGA,
   ADD_MEMBER_TO_TASK,
   CHANGE_DETAIL_TASK_MODAL,
+  DELETE_COMMENT_SAGA,
   DELETE_MEMBER_IN_TASK,
   GET_ALL_STATUS_ID_SAGA,
   GET_PRIORITY_SAGA,
   GET_TASK_TYPE_SAGA,
+  UPDATE_COMMENT_SAGA,
   UPDATE_TASK_DETAIL_SAGA,
 } from "../../redux/constants/JiraProjectAction";
 
@@ -28,27 +31,37 @@ export default function InfoModal() {
   let taskTypeList = useSelector(
     (state) => state.JiraDrawerContentReducer.taskTypeList
   );
-  let projectDetail = useSelector((state) => state.JiraManagementReducer.projectDetail );
-console.log(projectDetail)
+  let projectDetail = useSelector(
+    (state) => state.JiraManagementReducer.projectDetail
+  );
+  //console.log(projectDetail)
   let [visibleEditor, setVisibleEditor] = useState(false);
   let [editorContent, setEditorContent] = useState(detailTaskModal.description);
-
+  let [comment, setComment] = useState("");
+  let [editedCmt, setEditedCmt] = useState('');
+  let [cmtId, setCmtId] = useState(null);
+  
   useEffect(() => {
     dispatch({ type: GET_TASK_TYPE_SAGA });
     dispatch({ type: GET_PRIORITY_SAGA });
     dispatch({ type: GET_ALL_STATUS_ID_SAGA });
   }, []);
-  useEffect(()=> setEditorContent(detailTaskModal.description), [detailTaskModal.description])
- 
-  const renderTaskName= () => {
+  useEffect(
+    () => setEditorContent(detailTaskModal.description),
+    [detailTaskModal.description]
+  );
+
+  const renderTaskName = () => {
     return (
-      <textarea className="form-control" style={textAreaStyle}
-                name='taskName'
-                value={detailTaskModal.taskName} 
-                onChange={e=> handleChange(e)}  >
-      </textarea>
-    )
-  }
+      <textarea
+        className="form-control"
+        style={textAreaStyle}
+        name="taskName"
+        value={detailTaskModal.taskName}
+        onChange={(e) => handleChange(e)}
+      ></textarea>
+    );
+  };
   const renderTaskType = () => {
     return taskTypeList.map((item, index) => (
       <option value={item.id} key={index}>
@@ -124,15 +137,20 @@ console.log(projectDetail)
   };
   const renderMembers = () => {
     return detailTaskModal.assigness.map((item, index) => (
-      <button key={index} 
-              onClick={()=> {
-                dispatch({
-                  type:UPDATE_TASK_DETAIL_SAGA,
-                  actionType: DELETE_MEMBER_IN_TASK, 
-                  payload: item.id})}
-               // dispatch({type: DELETE_MEMBER_IN_TASK, payload: item.id})}
-              }
-              className="item d-flex align-items-center btn mb-2">
+      <button
+        key={index}
+        onClick={
+          () => {
+            dispatch({
+              type: UPDATE_TASK_DETAIL_SAGA,
+              actionType: DELETE_MEMBER_IN_TASK,
+              payload: item.id,
+            });
+          }
+          // dispatch({type: DELETE_MEMBER_IN_TASK, payload: item.id})}
+        }
+        className="item d-flex align-items-center btn mb-2"
+      >
         <div className="avatar">
           <img src={item.avatar} alt={item.name} />
         </div>
@@ -227,8 +245,9 @@ console.log(projectDetail)
               </button>
             </div>
           </>
-        ) : jsxDescription
-        }
+        ) : (
+          jsxDescription
+        )}
       </>
     );
   };
@@ -237,32 +256,154 @@ console.log(projectDetail)
     dispatch({
       type: UPDATE_TASK_DETAIL_SAGA,
       actionType: CHANGE_DETAIL_TASK_MODAL,
-      payload:{name, value}
-    })
-    // dispatch({  type: CHANGE_DETAIL_TASK_MODAL, 
-    //             payload: { name, value } 
+      payload: { name, value },
+    });
+    // dispatch({  type: CHANGE_DETAIL_TASK_MODAL,
+    //             payload: { name, value }
     //           });
   };
   const handleChangeAddMem = (e) => {
     //value= userId
     let { name, value } = e.target;
-      let selectedMember = projectDetail.members?.find(item => item.userId == value);
-      selectedMember={...selectedMember, id: selectedMember.userId};
-      dispatch({
-        type:UPDATE_TASK_DETAIL_SAGA,
-        actionType: ADD_MEMBER_TO_TASK, 
-        payload: selectedMember })   
-      // dispatch({type: ADD_MEMBER_TO_TASK, payload: selectedMember })   
+    let selectedMember = projectDetail.members?.find(
+      (item) => item.userId == value
+    );
+    selectedMember = { ...selectedMember, id: selectedMember.userId };
+    dispatch({
+      type: UPDATE_TASK_DETAIL_SAGA,
+      actionType: ADD_MEMBER_TO_TASK,
+      payload: selectedMember,
+    });
+    // dispatch({type: ADD_MEMBER_TO_TASK, payload: selectedMember })
+  };
+  const renderComments = ()=>{
+    return detailTaskModal.lstComment.map((cmt, index) => {
+      return (
+        <div key={index} className="lastest-comment mt-4">
+          <div className="comment-item">
+            <div
+              className="display-comment"
+              style={{ display: "flex" }}
+            >
+              <div className="avatar">
+                <img src={cmt.avatar} alt={cmt.name} />
+              </div>
+              <div className='w-100'>
+                <p style={{ marginBottom: 5 }}>
+                  <span className="font-weight-bold mr-2 text-uppercase">
+                    {cmt.name}
+                  </span>
+                  <span>a month ago</span>
+                </p>
+               
+                <div style={{ color: "#929398" }}>
+                  {cmtId == cmt.id?
+                   (<>
+                    <input  
+                            value={editedCmt} 
+                            onChange={e=> setEditedCmt(e.target.value)}
+                            type="text" className="form-control" />
+                    <div>
+                      <span onClick={()=> {
+                                      dispatch({
+                                      type:UPDATE_TASK_DETAIL_SAGA,
+                                      actionType: UPDATE_COMMENT_SAGA,
+                                      payload:{ id: cmt.id, contentComment:editedCmt}
+                                    })
+                                    setCmtId(null)
+                      }} className="editComment mr-2" style={{cursor: "pointer"}}>
+                      Save
+                      </span>
+                      •
+                      <span onClick={() =>{setCmtId(null)}} className="deleteComment ml-2" style={{cursor: "pointer"}}>
+                      Cancel
+                      </span>
+                    </div>
+                    </>
+                  ): (
+                  <>
+                   <div>{cmt.commentContent}</div>
+                    <div>
+                    <span onClick={()=> {
+                          setCmtId(cmt.id)
+                          setEditedCmt(cmt.commentContent)
+                        }}
+                          className="editComment mr-2" style={{cursor: "pointer"}}>
+                      Edit
+                    </span>
+                    •
+                    <span onClick={()=> dispatch({
+                                              type: UPDATE_TASK_DETAIL_SAGA,
+                                              actionType: DELETE_COMMENT_SAGA,
+                                              payload: cmt.id
+                                          })} 
+                          className="deleteComment ml-2" style={{cursor: "pointer"}}>
+                     Delete
+                    </span>
+                    </div>
+                    </>
+                  )}
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    })
   }
-  const textAreaStyle= {
-    width: '100%', fontWeight: '300', fontSize: '14px', 
-    height: '40px',
-    border:'1px solid transparent', 
-    resize: 'none',
-    cursor: 'pointer', 
-    overflow:'auto',
-    paddingLeft:0,
-  }
+  const addCommentToTask = () => {
+    return (
+      <div className="block-comment" style={{ display: "flex" }}>
+        <div className="avatar">
+          <img src={require("../../assets/img/1.jpg")} alt="img1" />
+        </div>
+        <div className="input-comment">
+          <input
+            type="text"
+            placeholder="Add a comment ..."
+            className="form-control"
+            name="contentComment"
+            value={comment}
+            onChange={(e) => {
+              let { name, value } = e.target;
+              setComment(value);
+            }}
+          />
+          <div className="mt-2">
+            <button
+              className="btn btn-primary mr-2"
+              onClick={() => {
+                dispatch({
+                  type: UPDATE_TASK_DETAIL_SAGA,
+                  actionType: ADD_COMMENT_TO_TASK_SAGA,
+                  payload: {
+                    taskId: detailTaskModal.taskId,
+                    contentComment: comment,
+                  },
+                });
+                setComment('')
+              }}
+            >
+              Save
+            </button>
+            <button className="btn btn-light" onClick={() => setComment('')}>Cancel</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+  const textAreaStyle = {
+    width: "100%",
+    fontWeight: "300",
+    fontSize: "14px",
+    height: "40px",
+    border: "1px solid transparent",
+    resize: "none",
+    cursor: "pointer",
+    overflow: "auto",
+    paddingLeft: 0,
+  };
   return (
     <>
       {/* Info Modal */}
@@ -318,72 +459,10 @@ console.log(projectDetail)
                     </div>
                     <div className="comment">
                       <h6>Comment</h6>
-                      <div
-                        className="block-comment"
-                        style={{ display: "flex" }}
-                      >
-                        <div className="avatar">
-                          <img
-                            src={require("../../assets/img/1.jpg")}
-                            alt="img1"
-                          />
-                        </div>
-                        <div className="input-comment">
-                          <input
-                            type="text"
-                            placeholder="Add a comment ..."
-                            className="form-control"
-                          />
-                          <p>
-                            <span style={{ fontWeight: 500, color: "gray" }}>
-                              Protip:
-                            </span>
-                            <span>
-                              press
-                              <span
-                                style={{
-                                  fontWeight: "bold",
-                                  background: "#ecedf0",
-                                  color: "#b4bac6",
-                                }}
-                              >
-                                M
-                              </span>
-                              to comment
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                      <div className="lastest-comment">
-                        <div className="comment-item">
-                          <div
-                            className="display-comment"
-                            style={{ display: "flex" }}
-                          >
-                            <div className="avatar">
-                              <img
-                                src={require("../../assets/img/2.jpg")}
-                                alt="img2"
-                              />
-                            </div>
-                            <div>
-                              <p style={{ marginBottom: 5 }}>
-                                Lord Gaben <span>a month ago</span>
-                              </p>
-                              <p style={{ marginBottom: 5 }}>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipisicing elit. Repellendus tempora ex
-                                voluptatum saepe ab officiis alias totam ad
-                                accusamus molestiae?
-                              </p>
-                              <div>
-                                <span style={{ color: "#929398" }}>Edit</span>•
-                                <span style={{ color: "#929398" }}>Delete</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      {/*Add comments */}
+                      {addCommentToTask()}
+                      {/*show comment*/}
+                      {renderComments()}
                     </div>
                   </div>
                   <div className="col-4">
@@ -392,7 +471,9 @@ console.log(projectDetail)
                       <select
                         name="typeId"
                         value={detailTaskModal.typeId}
-                        onChange={(e) => {handleChange(e)}}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
                         className="custom-select"
                       >
                         {renderTaskType()}
@@ -413,22 +494,31 @@ console.log(projectDetail)
                     </div>
                     <div className="assignees form-group">
                       <h6>ASSIGNEES</h6>
-                      <div className='d-flex flex-wrap'>
-                        {renderMembers()}
-                      </div>
-                      <select value='-1' name='memberList' onChange={(e)=> handleChangeAddMem(e)} className='custom-select'>
-                        <option value='-1' >+ Add more</option>
-                        {projectDetail.members?.filter(mem=> {
-                            let index= detailTaskModal.assigness?.findIndex(item=> item.id ===mem.userId)
-                            if(index !== -1){
+                      <div className="d-flex flex-wrap">{renderMembers()}</div>
+                      <select
+                        value="-1"
+                        name="memberList"
+                        onChange={(e) => handleChangeAddMem(e)}
+                        className="custom-select"
+                      >
+                        <option value="-1">+ Add more</option>
+                        {projectDetail.members
+                          ?.filter((mem) => {
+                            let index = detailTaskModal.assigness?.findIndex(
+                              (item) => item.id === mem.userId
+                            );
+                            if (index !== -1) {
                               //found match
                               return false;
                             }
-                            return true
-                            }).map((item,index)=>(
-                                  <option value={item.userId} key={index}> {item.name} </option>
-                                )
-                            )}
+                            return true;
+                          })
+                          .map((item, index) => (
+                            <option value={item.userId} key={index}>
+                              {" "}
+                              {item.name}{" "}
+                            </option>
+                          ))}
                       </select>
                     </div>
                     <div
@@ -500,3 +590,35 @@ console.log(projectDetail)
                         <p>A task represents work that needs to be done</p>
                       </div>
                     </div>*/
+
+/*show comments */
+/* <div className="lastest-comment">
+                        <div className="comment-item">
+                          <div
+                            className="display-comment"
+                            style={{ display: "flex" }}
+                          >
+                            <div className="avatar">
+                              <img
+                                src={require("../../assets/img/2.jpg")}
+                                alt="img2"
+                              />
+                            </div>
+                            <div>
+                              <p style={{ marginBottom: 5 }}>
+                                Lord Gaben <span>a month ago</span>
+                              </p>
+                              <p style={{ marginBottom: 5 }}>
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Repellendus tempora ex
+                                voluptatum saepe ab officiis alias totam ad
+                                accusamus molestiae?
+                              </p>
+                              <div>
+                                <span style={{ color: "#929398" }}>Edit</span>•
+                                <span style={{ color: "#929398" }}>Delete</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div> */

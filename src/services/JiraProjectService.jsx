@@ -138,3 +138,25 @@ export const updateTaskDetailAPI =(updateTask)=>{
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
     })
 }
+export const addCommentToTaskAPI = (payload)=> {
+    return Axios({
+        method: 'POST',
+        url:`http://casestudy.cyberlearn.vn/api/Comment/insertComment`,
+        data: payload,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+    })
+}
+export const updateCommentAPI = (id,commentContent) => {
+    return Axios({
+        method: 'PUT',
+        url:`http://casestudy.cyberlearn.vn/api/Comment/updateComment?id=${id}&contentComment=${commentContent}`,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+    })
+}
+export const deleteCommentAPI = (id) => {
+    return Axios({
+        method: 'DELETE',
+        url:`http://casestudy.cyberlearn.vn/api/Comment/deleteComment?idComment=${id}`,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+    })
+}
