@@ -1,6 +1,6 @@
 import React from 'react'
 import { Space, Table } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { DELETE_USER_SAGA, GET_ALL_USER_SAGA } from '../../redux/constants/JiraProjectAction';
 import DrawerEditUser from '../../components/JiraComp/DrawerEditUser';
@@ -8,9 +8,10 @@ import DrawerCreateUser from '../../components/JiraComp/DrawerCreateUser';
 
 export default function JiraUser() {
     const dispatch= useDispatch();
-    const userList = useSelector(state => state.JiraDrawerContentReducer.userList)
+    const userArray = useSelector(state => state.JiraDrawerContentReducer.userList)
     const userLogin = useSelector(state => state.UserLoginReducer)
-   
+    const [searchVal, setSearchVal] = useState('');
+    const [userList, setUserList] = useState(userArray)
     useEffect(() => {
         dispatch({type: GET_ALL_USER_SAGA})  
     },[])
@@ -37,6 +38,18 @@ export default function JiraUser() {
             content: <DrawerCreateUser/>,
             title: 'Create a new user'
         })
+    }
+    const handleChange= e=> {
+      setSearchVal(e.target.value)
+    }
+    const handleSearch = (e) => {
+      e.preventDefault()
+      let searchList = userArray.filter(user => user.name.includes(searchVal))
+      setUserList(searchList)
+    }
+    const handleReset = (e) => {
+      e.preventDefault();
+      setUserList(userArray)
     }
     const columns = [
         {
@@ -124,9 +137,14 @@ export default function JiraUser() {
         {/*Search bar */}
         <div className="row mt-4">
             <form className="d-flex my-2 my-lg-0">
-                <input className="form-control mr-2" type="search" placeholder="Search" aria-label="Search"/>
-                <button className="btn btn-primary mr-2" type="submit">Search</button>
-                <button className="btn btn-outline-primary" type="submit">Reset</button>
+                <input  name= 'user'
+                        value= {searchVal}
+                        onChange={ e => handleChange(e)}
+                        className="form-control mr-2" type="search" placeholder="Search" aria-label="Search"/>
+                <button onClick= {(e)=> handleSearch(e)}
+                        className="btn btn-primary mr-2" type="submit">Search</button>
+                <button onClick= {(e)=> handleReset(e)}
+                        className="btn btn-outline-primary" type="submit">Reset</button>
             </form>
         </div>
         {/*Table */}

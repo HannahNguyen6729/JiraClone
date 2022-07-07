@@ -322,7 +322,7 @@ export default function InfoModal() {
                     </>
                   ): (
                   <>
-                   <div>{cmt.commentContent}</div>
+                   <div className='text-dark'>{cmt.commentContent}</div>
                     <div>
                     <span onClick={()=> {
                           setCmtId(cmt.id)
