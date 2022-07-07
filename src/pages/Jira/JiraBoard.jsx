@@ -19,7 +19,7 @@ export default function JiraBoard(props) {
     })
 },[])
   return (
-     <div className="container">
+     <div className="container " style={{maxHeight: '100vh', overflowY: 'scroll'}}>
        <div className = 'main mt-5'>
         <HeaderMain/>
         <h3 className='mt-3'>{projectDetail.projectName}</h3>

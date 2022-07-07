@@ -34,7 +34,7 @@ import { CREATE_PROJECT_SAGA, GET_ALL_PROJECT_CATEGORIES_SAGA } from '../../redu
   }
   
   return (
-    <div className="container mt-5 mx-4">
+    <div className="container mt-5 mx-4" style={{maxHeight: '100vh', overflowY: 'scroll'}}>
       <h4 >Create a new project</h4>
       <form onSubmit = {handleSubmit}>
         <div className="mb-4">
