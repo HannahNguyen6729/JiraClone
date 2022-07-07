@@ -397,7 +397,7 @@ export default function InfoModal() {
     width: "100%",
     fontWeight: "300",
     fontSize: "14px",
-    height: "40px",
+    minHeight: "40px",
     border: "1px solid transparent",
     resize: "none",
     cursor: "pointer",

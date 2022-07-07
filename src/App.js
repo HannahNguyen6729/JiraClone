@@ -13,6 +13,7 @@ import JiraProject from "./pages/Jira/JiraProject";
 import JiraManagement from "./pages/Jira/JiraManagement";
 import JiraDrawerHOC from "./HOC/JiraDrawerHOC";
 import Register from "./pages/Register/Register";
+import JiraUser from "./pages/Jira/JiraUser";
 
 function App() {
   return (
@@ -28,7 +29,8 @@ function App() {
         <JiraTemplate exact path="/jiraproject" Comp={JiraProject} />
         <JiraTemplate exact path="/jiramanagement" Comp={JiraManagement} />
         <JiraTemplate exact path="/jiraProjectDetail/:projectId" Comp={JiraBoard} />
-        <JiraTemplate exact path="/" Comp={JiraManagement} />
+        <JiraTemplate exact path="/jirauser" Comp={JiraUser} />
+        <UserLoginTemplate exact path="/" Comp={Register} />
         <HomeTemplate exact path="*" Comp={PageNotFound} />
       </Switch>
     </>

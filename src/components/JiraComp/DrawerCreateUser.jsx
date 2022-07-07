@@ -1,9 +1,10 @@
 import React from 'react'
+import {useEffect} from 'react'
+import { connect, useDispatch } from 'react-redux';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
-import { connect } from 'react-redux';
 
-function Register(props) {
+ function DrawerCreateUser(props) {
     const {
         values,
         touched,
@@ -12,10 +13,18 @@ function Register(props) {
         handleBlur,
         handleSubmit,
       } = props;
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    //send data when submit form
+    dispatch({
+      type: 'SUBMIT_CREATED_USER_INFO',
+      payload: handleSubmit
+    })
+  },[])
   return (
-    <div className='d-flex justify-content-center align-items-center container' style={{ height: window.innerHeight }}>
+    <div className='d-flex justify-content-center align-items-center container mt-5' >
       <form onSubmit={handleSubmit} className='w-75'>
-      <p className='mb-4 text-center display-6'>Create account</p>
+      <p className='mb-4 text-center display-6'>Create a new user</p>
   {/*Name input */}
   <div className="row mb-1">
     <div className="form-group">
@@ -56,38 +65,12 @@ function Register(props) {
                 type="text" className="form-control" placeholder="Phone number"/>  
          <p className='text-danger'> {errors.phoneNumber} </p>
     </div>
-    </div>
-  {/* Checkbox */}
-  <div className="form-check d-flex justify-content-center mb-3">
-    <input className="form-check-input me-2" type="checkbox" defaultValue id="form2Example33" defaultChecked />
-    <label className="form-check-label" htmlFor="form2Example33">
-      Subscribe to our newsletter
-    </label>
-  </div>
-  {/* Submit button */}
-  <button type="submit" className="btn btn-primary btn-block mb-3">Sign up</button>
-  {/* Register buttons */}
-  <div className="text-center">
-    <p>or sign up with:</p>
-    <button type="button" className="btn btn-primary btn-floating mx-1">
-      <i className="fab fa-facebook-f" />
-    </button>
-    <button type="button" className="btn btn-primary btn-floating mx-1">
-      <i className="fab fa-google" />
-    </button>
-    <button type="button" className="btn btn-primary btn-floating mx-1">
-      <i className="fab fa-twitter" />
-    </button>
-    <button type="button" className="btn btn-primary btn-floating mx-1">
-      <i className="fab fa-github" />
-    </button>
-  </div>
+    </div> 
 </form>
 </div>
   )
 }
-
-const MyRegisterForm = withFormik({
+const CreateUserForm = withFormik({
     mapPropsToValues: (props) => {
         // Init form field
         return ({ 
@@ -108,8 +91,8 @@ const MyRegisterForm = withFormik({
         .required('Required'),
     passWord: Yup.string()
                 .min(6, "Minimum 6 characters")
-                .matches(/(?=.*[0-9])/, "Password must contain a number.")
-                .required("Required!"),
+                .required("Required!")
+                .matches(/(?=.*[0-9])/, "Password must contain a number."),
     phoneNumber: Yup.number()
                 .min(6, 'Too Short!')
                 .required('Required!'),
@@ -121,6 +104,6 @@ const MyRegisterForm = withFormik({
     props.dispatch({type: 'SIGN_UP_SAGA', payload: values})
     setSubmitting(false);
    },
-   displayName: 'RegisterForm',
-})(Register)
-export default connect()(  MyRegisterForm);
+   displayName: 'Create user Form',
+})(DrawerCreateUser)
+export default connect()(CreateUserForm);

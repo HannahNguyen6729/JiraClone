@@ -160,3 +160,25 @@ export const deleteCommentAPI = (id) => {
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
     })
 }
+export const signUpAPI = (userInfo) => {
+    return Axios({
+        method: 'POST',
+        url: `http://casestudy.cyberlearn.vn/api/Users/signup`,
+        data: userInfo,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+    })
+}
+export const deleteUserAPI= (userId)=>{
+    return Axios({
+        method:'DELETE',
+        url: `http://casestudy.cyberlearn.vn/api/Users/deleteUser?id=${userId}`,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}
+    })
+}
+export const updateUserInfoAPI = (userInfo) =>{
+    return Axios({
+        method: 'PUT',
+        url: `http://casestudy.cyberlearn.vn/api/Users/editUser`,
+        data: userInfo,
+    })
+}

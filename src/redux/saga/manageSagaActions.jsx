@@ -16,9 +16,10 @@ export function* signInSaga(action) {
     if (status === STATUS_CODE.SUCCESS) {
       localStorage.setItem(USER_INFO, JSON.stringify(data.content));
       localStorage.setItem(ACCESS_TOKEN, data.content.accessToken);
+     //when user login with different account, update user info
       yield put({type: UPDATE_USER_INFO , payload: data.content})
     }
-    history.push('/home');
+    history.push('/jiramanagement');
   } catch (err) {
     console.log(err);
   }

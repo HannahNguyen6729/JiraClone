@@ -12,7 +12,14 @@ const defaultState = {
     priorityList:[],
     userList:[],
     statusIdList:[],
-    membersList:[]
+    membersList:[],
+    editedUserInfo:{
+        "id": "string",
+        "passWord": "string",
+        "email": "string",
+        "name": "string",
+        "phoneNumber": "string"
+    }
 }
 export  const JiraDrawerContentReducer = (state = defaultState, action)=>{
     switch(action.type){
@@ -34,6 +41,10 @@ export  const JiraDrawerContentReducer = (state = defaultState, action)=>{
         }
         case GET_MEMBERS_BY_PROJECT_ID:{
             return {...state,membersList: action.payload}
+        }
+        case 'SHOW_EDITED_USER':{
+            state.editedUserInfo = action.payload;
+            return {...state}
         }
         default: {
             return {...state}

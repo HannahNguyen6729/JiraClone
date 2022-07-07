@@ -23,7 +23,7 @@ export default function JiraManagement() {
 
   const showDrawer = (project) => {
     const action = {
-      type: "OPEN_DRAWER_EDIT_PROJECT",
+      type: "OPEN_DRAWER",
       content: <DrawerEditProject />,
       title: 'Edit project'
     };

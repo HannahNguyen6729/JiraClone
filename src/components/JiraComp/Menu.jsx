@@ -15,16 +15,20 @@ export default function Menu() {
       </div>
       <div className="control">
         <div>
-          <i className="fa fa-credit-card mr-1" />
-          <NavLink className='text-dark' to='/jiraboard' activeClassName="active font-weight-bold">Kanban Board</NavLink>
+          <i className="fa fa-cog mr-1" />
+          <NavLink className='text-dark' to='/jiraproject' activeClassName="active font-weight-bold">Create Project</NavLink>
         </div>
         <div>
           <i className="fa fa-cog mr-1" />
           <NavLink className='text-dark' to='/jiramanagement' activeClassName="active font-weight-bold">Manage Project</NavLink>
         </div>
         <div>
+          <i className="fa fa-credit-card mr-1" />
+          <NavLink className='text-dark' to='/jiraboard' activeClassName="active font-weight-bold">Tasks Board</NavLink>
+        </div>
+        <div>
           <i className="fa fa-cog mr-1" />
-          <NavLink className='text-dark' to='/jiraproject' activeClassName="active font-weight-bold">Create Project</NavLink>
+          <NavLink className='text-dark' to='/jirauser' activeClassName="active font-weight-bold"> Manage user</NavLink>
         </div>
       </div>
       <div className="feature" >

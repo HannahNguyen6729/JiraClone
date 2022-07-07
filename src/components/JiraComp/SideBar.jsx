@@ -42,7 +42,7 @@ export default function SideBar() {
               icon: <PlusOutlined />,
               label: "Create Task",
               onClick: ()=>{ dispatch({
-                type: 'OPEN_DRAWER_CREATE_TASK', 
+                type: 'OPEN_DRAWER', 
                 title: "Create Task", 
                 content: <DrawerCreateTask/>})}
             },
