@@ -213,7 +213,7 @@ export default function JiraManagement() {
     },
   ];
   return (
-    <div className="container mt-5 mx-4">
+    <div className="container mt-5 mx-4" style={{maxHeight: '100vh', overflowY: 'scroll'}}>
       <h4>Jira Project Management</h4>
       <Space
         style={{

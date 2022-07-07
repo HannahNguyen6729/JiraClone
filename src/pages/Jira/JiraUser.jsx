@@ -117,7 +117,7 @@ export default function JiraUser() {
     const data = userList;
 
   return (
-    <div className="container  mt-5 mx-4">
+    <div className="container  mt-5 mx-4" style={{maxHeight: '100vh', overflowY: 'scroll'}}>
         {/*Avatar */}
         <div className="row">
             <div className="col-6">
